@@ -1,0 +1,59 @@
+ // login(request_data, callback) { 
+    //     let selectQuery = "";
+    //     let condition = [];
+    //     // const isValidateCredentials = true;
+
+    //     let email = request_data.email_id ;
+    //     let field = 'email_id';
+        
+    //     if(!email){
+    //         field = 'phone_number';
+    //         email = request_data.phone_number;
+    //     }
+    //     if(request_data.passwords){
+    //         request_data.passwords = md5(request_data.passwords);
+    //     }
+    //     selectQuery = "SELECT *, user_id FROM tbl_user WHERE " + field + " = ? AND passwords = ?";
+    //     condition = [email, request_data.passwords];
+    //     console.log("Executing Query:", selectQuery);
+    //     console.log("Query Parameters:", condition);
+            
+    //     try {
+    //         console.log("About to execute database.query...");
+    //         const [result]=await database.query(selectQuery, condition, function (error, result) {
+    //             console.log("Query Result:", result); 
+                
+    //             if (error) {
+    //                 console.error("Database Error:", error);
+    //                 return callback({
+    //                     code: response_code.OPERATION_FAILED,
+    //                     message: "Database error occurred"
+    //                 });
+    //             }
+        
+    //             if (result && result.length > 0) {
+    //                 let user = result[0];
+    //                 if (user.is_active == 1) {
+    //                     return callback({
+    //                         code: response_code.SUCCESS,
+    //                         message: "Login successful",
+    //                         data: user
+    //                     });
+    //                 } else {
+    //                     return callback({
+    //                         code: response_code.ACCOUNT_INACTIVE,
+    //                         message: "Account is inactive"
+    //                     });
+    //                 }
+    //             } else {
+    //                 return callback({
+    //                     code: response_code.INVALID_CREDENTIALS,
+    //                     message: "Invalid email or password"
+    //                 });
+    //             }
+    //         });
+    //     } catch (e) {
+    //         console.error("Unexpected Error:", e);
+    //     }
+        
+    //     };
