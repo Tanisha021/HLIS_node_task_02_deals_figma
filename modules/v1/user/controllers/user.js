@@ -80,7 +80,113 @@ class User{
             common.response(res, _responseData);
         });
     }
+    categoryList(req, res) {
+        var request_data = req.body;
     
+        userModel.categoryList(request_data, (_responseData) => {
+            common.response(res, _responseData);
+        });
+    }
+    availableDealsList(req, res) {
+        var request_data = req.body;
     
+        userModel.availableDealsList(request_data, (_responseData) => {
+            common.response(res, _responseData);
+        });
+    }
+    dealsDetailsPage(req, res) {
+        var request_data = req.params;
+    
+        userModel.dealsDetailsPage(request_data, (_responseData) => {
+            common.response(res, _responseData);
+        });
+    }
+    categoryDealCount(req, res) {
+        var request_data = req.body;
+    
+        userModel.categoryDealCount(request_data, (_responseData) => {
+            common.response(res, _responseData);
+        });
+    }
+    // add_deal(req, res) {
+    //     var request_data = req.body;
+    
+    //     userModel.add_deal(request_data, (_responseData) => {
+    //         common.response(res, _responseData);
+    //     });
+    // }
+   
+    deals4u(req, res) {
+        var request_data = req.params;
+    
+        userModel.deals4u(request_data, (_responseData) => {
+            common.response(res, _responseData);
+        });
+    }
+    dealComment(req, res) {
+        var request_data = req.params;
+    
+        userModel.dealComment(request_data, (_responseData) => {
+            common.response(res, _responseData);
+        });
+    }   
+    user_profile(req, res) {
+        var request_data = req.params;
+    
+        userModel.user_profile(request_data, (_responseData) => {
+            common.response(res, _responseData);
+        });
+    }   
+
+    create_post(req,res){
+        const request_data = req.body;
+        if (!request_data.title || !request_data.descriptions || !request_data.category_name) {
+            return common.response(res, {
+                code: responseCode.OPERATION_FAILED,
+                message: "Missing required fields"
+           });
+        }
+        userModel.create_post(request_data, request_data.user_id, (response_data) => {
+            common.response(res, response_data);
+        });
+    }
+    edit_profile(req,res){
+        const request_data = req.body;
+        if (!request_data.title || !request_data.descriptions || !request_data.category_name) {
+            return common.response(res, {
+                code: responseCode.OPERATION_FAILED,
+                message: "Missing required fields"
+           });
+        }
+        userModel.edit_profile(request_data, request_data.user_id, (response_data) => {
+            common.response(res, response_data);
+        });
+    }
+    add_deal(req,res){
+        const request_data = req.body;
+        if (!request_data.title || !request_data.descriptions || !request_data.category_name) {
+            return common.response(res, {
+                code: responseCode.OPERATION_FAILED,
+                message: "Missing required fields"
+           });
+        }
+        userModel.add_deal(request_data, request_data.user_id, (response_data) => {
+            common.response(res, response_data);
+        });
+    }
+
+    get_followers(req,res){
+        const request_data = req.body;
+        userModel.get_followers(request_data.user_id, (response) => {
+        common.response(res, response);
+    });
+    }
+    get_following(req,res)   {
+        const request_data = req.body;
+        userModel.get_following(request_data.user_id, (response) => {
+        common.response(res, response);
+    });
 }
+    
+};
 module.exports =new User();
