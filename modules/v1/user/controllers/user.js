@@ -187,6 +187,18 @@ class User{
         common.response(res, response);
     });
 }
+    account_delete(req,res){
+        const request_data = req.body;
+        userModel.delete_account(request_data, request_data.user_id, (response) => {
+        common.response(res, response);
+    });
+    }
     
+    contact_us(req,res){
+        const request_data = req.body;
+        userModel.contact_us(request_data, request_data.user_id, (response) => {
+        common.response(res, response);
+    });
+}
 };
 module.exports =new User();

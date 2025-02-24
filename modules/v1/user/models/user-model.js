@@ -1005,48 +1005,96 @@ class UserModel {
     //     }
     // }
 
-    // async contact_us(request_data, user_id, callback) {
-    //     try {
+    async contact_us(request_data, user_id, callback) {
+        try {
 
-    //         if (!request_data.title || !request_data.email_id || !request_data.message) {
-    //             return callback({
-    //                 code: response_code.BAD_REQUEST,
-    //                 message: "Title, Email ID, and Message are required"
-    //             });
-    //         }
+            if (!request_data.title || !request_data.email_id || !request_data.message) {
+                return callback({
+                    code: response_code.BAD_REQUEST,
+                    message: "Title, Email ID, and Message are required"
+                });
+            }
     
-    //         const contact_us = {
-    //             title: request_data.title,
-    //             email_id: request_data.email_id,
-    //             message: request_data.message,
-    //             user_id: user_id
-    //         };
+            const contact_us = {
+                title: request_data.title,
+                email_id: request_data.email_id,
+                message: request_data.message,
+                user_id: user_id
+            };
     
-    //         const insertQuery = "INSERT INTO tbl_contact_us SET ?";
+            const insertQuery = "INSERT INTO tbl_contact_us SET ?";
     
-    //         const [result] = await database.query(insertQuery, [contact_us]);
+            const [result] = await database.query(insertQuery, [contact_us]);
     
-    //         if (result.affectedRows > 0) {
-    //             return callback({
-    //                 code: response_code.SUCCESS,
-    //                 message: "Contact request submitted successfully",
-    //                 data: { contact_id: result.insertId }
-    //             });
-    //         } else {
-    //             return callback({
-    //                 code: response_code.OPERATION_FAILED,
-    //                 message: "Failed to submit contact request"
-    //             });
-    //         }
+            if (result.affectedRows > 0) {
+                return callback({
+                    code: response_code.SUCCESS,
+                    message: "Contact request submitted successfully",
+                    data: { contact_id: result.insertId }
+                });
+            } else {
+                return callback({
+                    code: response_code.OPERATION_FAILED,
+                    message: "Failed to submit contact request"
+                });
+            }
     
-    //     } catch (error) {
-    //         console.error("Error in contact_us:", error);
-    //         return callback({
-    //             code: response_code.OPERATION_FAILED,
-    //             message: "Error submitting contact request"
-    //         });
-    //     }
-    // }   
+        } catch (error) {
+            console.error("Error in contact_us:", error);
+            return callback({
+                code: response_code.OPERATION_FAILED,
+                message: "Error submitting contact request"
+            });
+        }
+    }  
+    async delete_account(request_data, user_id, callback) {
+        try {
+
+            var select_user_query = "SELECT * FROM tbl_user WHERE user_id = ?";
+            const [info] = await database.query(select_user_query, [user_id]);
+
+            // Check if user is logged in
+            if (!info.length || info[0].is_login === 0) {
+                return callback({
+                    code: response_code.OPERATION_FAILED,
+                    message: "Login required"
+                });
+            }
+            
+            const selectUserQuery = "SELECT * FROM tbl_user WHERE user_id = ? AND is_deleted = 0";
+            const [user] = await database.query(selectUserQuery, [user_id]);
+    
+            if (!user.length) {
+                return callback({
+                    code: response_code.NOT_FOUND,
+                    message: "User not found or already deleted"
+                });
+            }
+    
+            const deleteUserQuery = "UPDATE tbl_user SET is_deleted = 1, is_active = 0, is_login = 0 WHERE user_id = ?";
+            await database.query(deleteUserQuery, [user_id]);
+    
+            const deleteDealsQuery = "UPDATE tbl_deal SET is_deleted = 1, is_active=0 WHERE user_id = ?";
+            await database.query(deleteDealsQuery, [user_id]);
+    
+            const deleteCommentsQuery = "UPDATE tbl_comment_deal SET is_deleted = 1 WHERE user_id = ?";
+            await database.query(deleteCommentsQuery, [user_id]);
+    
+            const deleteFollowQuery = "UPDATE tbl_follow SET is_deleted = 1 WHERE user_id = ? OR follow_id = ?";
+            await database.query(deleteFollowQuery, [user_id, user_id]);
+    
+            return callback({
+                code: response_code.SUCCESS,
+                message: "User account deleted successfully"
+            });
+    
+        } catch (error) {
+            return callback({
+                code: response_code.OPERATION_FAILED,
+                message: error.sqlMessage || "Error deleting account"
+            });
+        }
+    }
 }
 
 module.exports = new UserModel();

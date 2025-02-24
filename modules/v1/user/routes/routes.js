@@ -23,9 +23,12 @@ const customerRoute = (app) => {
     app.post("/v1/user/create-deal", User.add_deal);
     app.post("/v1/user/create-post", User.create_post);
     app.post("/v1/user/edit_profile", User.edit_profile);
-
+    app.post("/v1/user/contact-us", User.contact_us);
+    
     app.post("/v1/user/get_followers", User.get_followers);
     app.post("/v1/user/get_following", User.get_following);
+
+    app.post("/v1/user/delete-account", User.account_delete);
 
 };
 
