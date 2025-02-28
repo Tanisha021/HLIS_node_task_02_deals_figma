@@ -1,3 +1,9 @@
+in validation and localizify what we did is npm i Validator and localizify
+2)then made middleware/validators.js in which we defined funtions for extractHeaderLanguage ->due to which we add lang eg.en in header in postman ,
+checkValidationRules like this
+3)made validation_rules in modules in which we kept all required fields and validation
+4) in controllers/user.js we made changes and added keyword and message and imported validation_rules.js
+ 
  // login(request_data, callback) { 
     //     let selectQuery = "";
     //     let condition = [];
