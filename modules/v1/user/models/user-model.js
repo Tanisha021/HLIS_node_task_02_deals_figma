@@ -39,7 +39,7 @@ class UserModel {
         } catch (error) {
             callback({
                 code: response_code.OPERATION_FAILED,
-                message: "Signup error: "
+                message: "Signup error: "+ error.message
             }, null);
         }
 
@@ -323,17 +323,17 @@ class UserModel {
     async login(request_data, callback) {
         try {
             let field = 'email_id';
-            let email = request_data.email_id;
+            let email_id = request_data.email_id;
 
             if (!email) {
                 field = 'phone_number';
-                email = request_data.phone_number;
+                email_id = request_data.phone_number;
             }
 
             const passwordHash = md5(request_data.passwords || ""); // Hash the password
 
             const selectQuery = `SELECT *, user_id FROM tbl_user WHERE ${field} = ? AND passwords = ?`;
-            const condition = [email, passwordHash];
+            const condition = [email_id, passwordHash];
 
             console.log("Executing Query:", selectQuery);
             console.log("Query Parameters:", condition);

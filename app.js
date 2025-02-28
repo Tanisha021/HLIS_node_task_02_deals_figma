@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 const common  = require('./utilities/common');
 
-
+app.use('/',require('./middleware/validators').extractHeaderLanguage);
 app_routing.v1(app); //router v1 ko call karega 
  
 
